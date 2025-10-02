@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm Typing Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #88c0d0;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #81a1c1;
+            font-size: 1.1rem;
+        }
+
+        .file-upload {
+            background: rgba(46, 52, 64, 0.5);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(136, 192, 208, 0.1);
+        }
+
+        .file-input {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(59, 66, 82, 0.8);
+            border: 1px solid rgba(136, 192, 208, 0.2);
+            border-radius: 6px;
+            color: #e0e0e0;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .test-area {
+            background: rgba(46, 52, 64, 0.3);
+            padding: 40px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(136, 192, 208, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .test-area.active {
+            border-color: rgba(136, 192, 208, 0.3);
+            background: rgba(46, 52, 64, 0.4);
+        }
+
+        .text-display {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            min-height: 140px;
+            line-height: 2.2;
+            user-select: none;
+            color: #4c566a;
+            transition: color 0.3s ease;
+        }
+
+        .text-display.active {
+            color: #d8dee9;
+        }
+
+        .typed-correct {
+            color: #a3be8c;
+        }
+
+        .typed-incorrect {
+            color: #bf616a;
+            background: rgba(191, 97, 106, 0.1);
+            border-radius: 3px;
+        }
+
+        .current-char {
+            background: rgba(136, 192, 208, 0.3);
+            color: #88c0d0;
+            border-radius: 4px;
+            padding: 0 2px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { background-color: rgba(136, 192, 208, 0.3); }
+            50% { background-color: rgba(136, 192, 208, 0.5); }
+        }
+
+        .untyped {
+            color: #4c566a;
+        }
+
+        .typing-input {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.1rem;
+            background: rgba(59, 66, 82, 0.8);
+            border: 2px solid rgba(136, 192, 208, 0.3);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .typing-input:focus {
+            outline: none;
+            border-color: #88c0d0;
+            background: rgba(59, 66, 82, 0.9);
+            box-shadow: 0 0 20px rgba(136, 192, 208, 0.2);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(46, 52, 64, 0.5);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(136, 192, 208, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #81a1c1;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #88c0d0;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: rgba(136, 192, 208, 0.2);
+            color: #88c0d0;
+            border: 1px solid rgba(136, 192, 208, 0.3);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: rgba(136, 192, 208, 0.3);
+            border-color: rgba(136, 192, 208, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: rgba(76, 86, 106, 0.3);
+            color: #4c566a;
+            border-color: rgba(76, 86, 106, 0.3);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .instruction {
+            text-align: center;
+            color: #81a1c1;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Calm Typing</h1>
+            <p>Upload your PDF or TXT file for peaceful typing practice</p>
+        </div>
+
+        <div class="file-upload">
+            <input type="file" id="fileInput" accept=".pdf,.txt" class="file-input">
+            <button id="loadFile" class="btn">Load File</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">WPM</div>
+                <div class="stat-value" id="wpm">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Accuracy</div>
+                <div class="stat-value" id="accuracy">100%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Time</div>
+                <div class="stat-value" id="timer">∞</div>
+            </div>
+        </div>
+
+        <div class="test-area" id="testArea">
+            <div class="text-display" id="textDisplay">
+                Upload a file to begin your peaceful typing session...
+            </div>
+            <input type="text" class="typing-input" id="typingInput" placeholder="Click here and start typing calmly..." disabled>
+        </div>
+
+        <div class="controls">
+            <button id="restartBtn" class="btn" disabled>Restart</button>
+            <button id="newTextBtn" class="btn">New Text</button>
+        </div>
+
+        <div class="instruction">
+            Backspace is enabled • Take your time • Enjoy the process
+        </div>
+    </div>
+
+    <!-- PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
